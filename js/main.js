@@ -363,4 +363,49 @@
 
   /* ---------------- sparkline gentle refresh ---------------- */
   setInterval(paintSparkline, 6000);
+
+  /* ---------------- digital hover sound ---------------- */
+  if (matchMedia("(hover: hover)").matches) {
+    const HOVER_SOUND_SELECTOR =
+      ".btn, .nav-item a, .mode-switch button, .link-card, .social-row a, " +
+      ".player-controls button, .wallet-mini, .copyable, .info-card, .media-card";
+
+    let audioCtx = null;
+    function ensureAudio() {
+      if (audioCtx) return audioCtx;
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      audioCtx = Ctx ? new Ctx() : null;
+      return audioCtx;
+    }
+    function resumeAudio() {
+      const ctx = ensureAudio();
+      if (ctx && ctx.state === "suspended") ctx.resume();
+    }
+    document.addEventListener("pointerdown", resumeAudio, { once: true });
+    document.addEventListener("keydown", resumeAudio, { once: true });
+
+    function playHoverBlip() {
+      const ctx = ensureAudio();
+      if (!ctx || ctx.state !== "running") return;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(760, now);
+      osc.frequency.exponentialRampToValueAtTime(1500, now + 0.055);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.045, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.085);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.1);
+    }
+
+    document.addEventListener("mouseover", (e) => {
+      const el = e.target.closest(HOVER_SOUND_SELECTOR);
+      if (!el) return;
+      if (el.contains(e.relatedTarget)) return; // still inside the same element
+      playHoverBlip();
+    });
+  }
 })();

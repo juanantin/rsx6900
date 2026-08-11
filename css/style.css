@@ -379,8 +379,10 @@ button { font-family: inherit; }
   min-height: 320px;
   background: #bfe8ff;
 }
-.hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.hero-media-inner { transition: transform 0.25s ease-out; will-change: transform; }
+.hero-media img,
+.hero-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-media-inner { position: absolute; inset: 0; transition: transform 0.25s ease-out; will-change: transform; }
+.hero-video { background: #bfe8ff; }
 
 .hero-consoles {
   position: absolute;
