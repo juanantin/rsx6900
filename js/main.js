@@ -28,144 +28,8 @@
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------------- toast ---------------- */
-  const toastEl = document.getElementById("toast");
-  let toastTimer = null;
-  function showToast(msg) {
-    if (!toastEl) return;
-    toastEl.textContent = msg;
-    toastEl.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1800);
-  }
-
-  /* ---------------- clipboard copy ---------------- */
-  function copyText(text, label) {
-    const done = () => showToast((label || "ADDRESS") + " COPIED");
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
-    } else {
-      fallbackCopy(text, done);
-    }
-  }
-  function fallbackCopy(text, cb) {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand("copy"); } catch (err) { /* no-op */ }
-    document.body.removeChild(ta);
-    cb();
-  }
-
-  const FULL_ADDRESS = "0x7A1f9c3D2e8B4a6F1c0D5e7A9b3C6f8E2a4B69RSX";
-  const copyContract = document.getElementById("copyContract");
-  const copyTreasury = document.getElementById("copyTreasury");
-  if (copyContract) copyContract.addEventListener("click", () => copyText(FULL_ADDRESS, "CONTRACT"));
-  if (copyTreasury) copyTreasury.addEventListener("click", () => copyText(FULL_ADDRESS, "TREASURY ADDRESS"));
-
-  /* ---------------- airdrop countdown ---------------- */
-  const countdownEl = document.getElementById("airdropCountdown");
-  const countdownMiniEl = document.getElementById("roundCountdownMini");
-  const airdropDateEl = document.getElementById("airdropDate");
-
-  const AIRDROP_TARGET = new Date(Date.now() + (21 * 3600 + 42 * 60 + 15) * 1000);
-  if (airdropDateEl) {
-    airdropDateEl.textContent = AIRDROP_TARGET.toLocaleString("en-US", {
-      month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit", timeZone: "UTC", timeZoneName: "short"
-    }).toUpperCase();
-  }
-
-  function tickCountdown() {
-    const diff = Math.max(0, AIRDROP_TARGET.getTime() - Date.now());
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    if (countdownEl) countdownEl.textContent = `${h}H ${String(m).padStart(2, "0")}M ${String(s).padStart(2, "0")}S`;
-    if (countdownMiniEl) countdownMiniEl.textContent = `IN ${h}H ${String(m).padStart(2, "0")}M`;
-  }
-  tickCountdown();
-  setInterval(tickCountdown, 1000);
-
-  /* ---------------- bar chart entrance animation ---------------- */
-  const barChart = document.getElementById("barChart");
-  function paintBars(container) {
-    if (!container) return;
-    container.querySelectorAll(".bar-col").forEach((col, i) => {
-      const bar = col.querySelector(".bar");
-      const target = col.dataset.h || "10";
-      setTimeout(() => { bar.style.height = target + "%"; }, 80 * i);
-    });
-  }
-
-  const HISTORY_ROUNDS = [
-    { label: "#01", h: 6 }, { label: "#02", h: 9 }, { label: "#03", h: 13 },
-    { label: "#04", h: 15 }, { label: "#05", h: 18 }
-  ];
-  const historyToggle = document.getElementById("historyToggle");
-  let historyShown = false;
-  if (historyToggle && barChart) {
-    historyToggle.addEventListener("click", () => {
-      if (historyShown) {
-        barChart.querySelectorAll(".bar-col.history").forEach((el) => el.remove());
-        historyToggle.textContent = "VIEW HISTORY →";
-      } else {
-        HISTORY_ROUNDS.slice().reverse().forEach((r) => {
-          const col = document.createElement("div");
-          col.className = "bar-col history";
-          col.innerHTML = `<div class="bar" style="height:0%"></div><div class="bar-lbl">${r.label}</div>`;
-          barChart.insertBefore(col, barChart.firstChild);
-          const bar = col.querySelector(".bar");
-          requestAnimationFrame(() => { bar.style.height = r.h + "%"; });
-        });
-        historyToggle.textContent = "← HIDE HISTORY";
-      }
-      historyShown = !historyShown;
-    });
-  }
-
-  /* ---------------- index-status decorative sparkline ---------------- */
-  const indexGraphic = document.getElementById("indexGraphic");
-  function paintSparkline() {
-    if (!indexGraphic) return;
-    indexGraphic.innerHTML = "";
-    for (let i = 0; i < 22; i++) {
-      const bar = document.createElement("div");
-      bar.className = "g-bar";
-      const h = 20 + Math.round(Math.random() * 70);
-      bar.style.height = h + "%";
-      indexGraphic.appendChild(bar);
-    }
-  }
-  paintSparkline();
-
-  /* ---------------- count-up stat values ---------------- */
-  function formatNumber(n, decimals) {
-    return n.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-  }
-  function countUp(el) {
-    const target = parseFloat(el.dataset.target);
-    if (Number.isNaN(target)) return;
-    const prefix = el.dataset.prefix || "";
-    const decimals = el.dataset.target.includes(".") ? 2 : 0;
-    const duration = 1100;
-    const start = performance.now();
-    function frame(now) {
-      const p = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const val = target * eased;
-      el.textContent = prefix + formatNumber(decimals ? Math.round(val * 100) / 100 : Math.round(val), decimals);
-      if (p < 1) requestAnimationFrame(frame);
-      else el.textContent = prefix + formatNumber(target, decimals);
-    }
-    requestAnimationFrame(frame);
-  }
-
-  /* ---------------- scroll reveal + count-up trigger ---------------- */
+  /* ---------------- scroll reveal ---------------- */
   const revealEls = document.querySelectorAll(".reveal");
-  const countEls = document.querySelectorAll(".stat-value[data-target]");
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -175,28 +39,6 @@
     });
   }, { threshold: 0.15 });
   revealEls.forEach((el) => revealObserver.observe(el));
-
-  const countObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        countUp(entry.target);
-        countObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.4 });
-  countEls.forEach((el) => countObserver.observe(el));
-
-  if (barChart) {
-    const chartObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          paintBars(barChart);
-          chartObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
-    chartObserver.observe(barChart);
-  }
 
   /* ---------------- active-section nav highlighting ---------------- */
   const navItems = Array.from(document.querySelectorAll(".nav-item"));
@@ -267,50 +109,11 @@
     });
   }
 
-  /* ---------------- live-feeling data jitter (client-side demo only) ---------------- */
-  const state = { price: 0.004206, mcap: 4.2, vol: 1.28, holders: 3842 };
-  const tickPrice = document.getElementById("tickPrice");
-  const tickMcap = document.getElementById("tickMcap");
-  const tickVol = document.getElementById("tickVol");
-  const tickHolders = document.getElementById("tickHolders");
-  const statVol = document.getElementById("statVol");
-  const statMcap = document.getElementById("statMcap");
-  const dashUpdated = document.getElementById("dashUpdated");
-
-  function flash(el) {
-    if (!el) return;
-    el.classList.remove("tick-flash");
-    void el.offsetWidth;
-    el.classList.add("tick-flash");
-  }
-
-  function jitter() {
-    state.price = Math.max(0.0001, state.price * (1 + (Math.random() - 0.5) * 0.01));
-    state.mcap = Math.max(0.1, state.mcap * (1 + (Math.random() - 0.5) * 0.008));
-    state.vol = Math.max(0.05, state.vol * (1 + (Math.random() - 0.48) * 0.02));
-
-    const priceStr = "$" + state.price.toFixed(6);
-    const mcapStr = "$" + state.mcap.toFixed(1) + "M";
-    const volStr = "$" + state.vol.toFixed(2) + "M";
-
-    if (tickPrice) { tickPrice.textContent = priceStr; flash(tickPrice); }
-    if (tickMcap) { tickMcap.textContent = mcapStr; flash(tickMcap); }
-    if (tickVol) { tickVol.textContent = volStr; flash(tickVol); }
-    if (statMcap) statMcap.textContent = mcapStr;
-    if (statVol) { statVol.textContent = volStr; flash(statVol); }
-
-    if (dashUpdated) dashUpdated.textContent = "LIVE · UPDATED JUST NOW";
-  }
-  setInterval(jitter, 4000);
-
-  /* ---------------- sparkline gentle refresh ---------------- */
-  setInterval(paintSparkline, 6000);
-
   /* ---------------- digital hover sound ---------------- */
   if (matchMedia("(hover: hover)").matches) {
     const HOVER_SOUND_SELECTOR =
       ".btn, .nav-item a, .mode-switch button, .link-card, .social-row a, " +
-      ".wallet-mini, .copyable, .info-card";
+      ".wallet-mini, .info-card";
 
     let audioCtx = null;
     function ensureAudio() {

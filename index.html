@@ -60,7 +60,7 @@
 
       <div class="topbar">
         <span class="tag-pill"><span class="dot"></span>[ ROBLOX.STONKS.INDEX // V.6900 ]</span>
-        <button class="wallet-mini" id="copyContract" type="button">CA: 0x7A1f...69RSX <span aria-hidden="true">⧉</span></button>
+        <span class="wallet-mini is-pending">CA: <span class="pending-value">...</span></span>
       </div>
 
       <div class="marquee" aria-hidden="true">
@@ -105,66 +105,59 @@
       <section class="section" id="dashboard">
         <div class="section-head">
           <h2>&gt; RSX DASHBOARD</h2>
-          <span class="chip" id="dashUpdated">LIVE · UPDATED JUST NOW</span>
+          <span class="chip">AWAITING LAUNCH <span class="pending-value">...</span></span>
         </div>
 
         <div class="stat-grid">
           <div class="stat-card reveal">
             <div class="stat-icon">$</div>
             <div class="stat-label">Fees Collected<br>(All Time)</div>
-            <div class="stat-value" id="statFees" data-target="312420" data-prefix="$">$0</div>
-            <div class="stat-delta" id="statFeesDelta">+ $18,420 (24H)</div>
+            <div class="stat-value pending-value">...</div>
+            <div class="stat-delta pending-value">...</div>
           </div>
           <div class="stat-card reveal">
             <div class="stat-icon">▣</div>
             <div class="stat-label">$RBLX Stocks<br>Airdropped</div>
-            <div class="stat-value" id="statStocks" data-target="184.35">0</div>
-            <div class="stat-delta" id="statStocksDelta">+ 12.47 (24H)</div>
+            <div class="stat-value pending-value">...</div>
+            <div class="stat-delta pending-value">...</div>
           </div>
           <div class="stat-card reveal">
             <div class="stat-icon">#</div>
             <div class="stat-label">Distribution<br>Round</div>
-            <div class="stat-value">#12</div>
-            <div class="stat-delta muted-delta" id="roundCountdownMini">IN 21H 42M</div>
+            <div class="stat-value pending-value">...</div>
+            <div class="stat-delta muted-delta pending-value">...</div>
           </div>
           <div class="stat-card reveal">
             <div class="stat-icon">◈</div>
             <div class="stat-label">Holders</div>
-            <div class="stat-value" id="statHolders" data-target="3842">0</div>
-            <div class="stat-delta" id="statHoldersDelta">+ 234 (24H)</div>
+            <div class="stat-value pending-value">...</div>
+            <div class="stat-delta pending-value">...</div>
           </div>
           <div class="stat-card reveal">
             <div class="stat-icon">▲</div>
             <div class="stat-label">Market Cap</div>
-            <div class="stat-value" id="statMcap">$4.2M</div>
+            <div class="stat-value pending-value">...</div>
             <div class="stat-delta muted-delta">FULLY DILUTED</div>
           </div>
           <div class="stat-card reveal">
             <div class="stat-icon">▥</div>
             <div class="stat-label">Volume 24H</div>
-            <div class="stat-value" id="statVol">$1.28M</div>
-            <div class="stat-delta" id="statVolDelta">+ 48.6%</div>
+            <div class="stat-value pending-value">...</div>
+            <div class="stat-delta pending-value">...</div>
           </div>
         </div>
 
         <div class="dash-row">
           <div class="panel reveal">
             <div class="panel-title">DISTRIBUTION OVERVIEW</div>
-            <div class="bar-chart" id="barChart">
-              <div class="bar-col" data-h="20"><div class="bar" style="height:0%"></div><div class="bar-lbl">#06</div></div>
-              <div class="bar-col" data-h="38"><div class="bar" style="height:0%"></div><div class="bar-lbl">#07</div></div>
-              <div class="bar-col" data-h="58"><div class="bar" style="height:0%"></div><div class="bar-lbl">#08</div></div>
-              <div class="bar-col" data-h="64"><div class="bar" style="height:0%"></div><div class="bar-lbl">#09</div></div>
-              <div class="bar-col" data-h="80"><div class="bar" style="height:0%"></div><div class="bar-lbl">#10</div></div>
-              <div class="bar-col" data-h="96"><div class="bar" style="height:0%"></div><div class="bar-lbl">#11</div></div>
-              <div class="bar-col upcoming" data-h="45"><div class="bar" style="height:0%"></div><div class="bar-lbl">#12</div></div>
+            <div class="data-pending">
+              <span class="pending-value">AWAITING LAUNCH DATA ...</span>
             </div>
             <div class="airdrop-box">
               <span class="k">NEXT AIRDROP</span>
-              <span class="countdown" id="airdropCountdown">21H 42M 15S</span>
-              <span class="sub">ROUND #12 · <span id="airdropDate">—</span></span>
+              <span class="countdown pending-value">...</span>
+              <span class="sub pending-value">...</span>
             </div>
-            <button class="btn" id="historyToggle" type="button" style="align-self:flex-start;">VIEW HISTORY →</button>
           </div>
 
           <div class="panel reveal">
@@ -173,9 +166,8 @@
               <div class="status-row"><span class="k">ORACLE:</span><span class="v"><span class="status-dot"></span> THEINDEX FINANCE</span></div>
               <div class="status-row"><span class="k">ASSET:</span><span class="v">$RBLX (TOKENIZED)</span></div>
               <div class="status-row"><span class="k">NETWORK:</span><span class="v">ROBINHOOD CHAIN</span></div>
-              <div class="status-row"><span class="k">TREASURY:</span><span class="v copyable" id="copyTreasury">0x7A1f...69RSX <span aria-hidden="true">⧉</span></span></div>
+              <div class="status-row"><span class="k">TREASURY:</span><span class="v pending-value">...</span></div>
             </div>
-            <div class="index-graphic" id="indexGraphic" aria-hidden="true"></div>
           </div>
 
           <div class="panel join-panel reveal">
@@ -192,7 +184,7 @@
           </div>
         </div>
 
-        <p class="disclaimer">DASHBOARD DATA SHOWN IS ILLUSTRATIVE DEMO DATA FOR DESIGN PURPOSES AND UPDATES CLIENT-SIDE ONLY. CONNECT THE LIVE THEINDEX FINANCE ORACLE FEED TO POWER REAL FIGURES.</p>
+        <p class="disclaimer">RSX HAS NOT LAUNCHED YET. DASHBOARD FIGURES, CONTRACT ADDRESS AND TREASURY WILL POPULATE HERE ONCE THE INDEX GOES LIVE ON-CHAIN.</p>
       </section>
 
       <!-- ============ ABOUT ============ -->
@@ -249,15 +241,15 @@
 <!-- ============ TICKER BAR ============ -->
 <div class="ticker-bar">
   <div class="ticker-inner">
-    <span class="ticker-live"><span class="dot"></span>$RSX LIVE</span>
+    <span class="ticker-live pending"><span class="dot"></span>$RSX PENDING</span>
     <span class="ticker-sep">|</span>
-    <span><span class="k">MCAP:</span> <span id="tickMcap">$4.2M</span></span>
+    <span><span class="k">MCAP:</span> <span class="pending-value">...</span></span>
     <span class="ticker-sep">|</span>
-    <span><span class="k">PRICE:</span> <span id="tickPrice">$0.004206</span></span>
+    <span><span class="k">PRICE:</span> <span class="pending-value">...</span></span>
     <span class="ticker-sep">|</span>
-    <span><span class="k">24H VOL:</span> <span id="tickVol">$1.28M</span></span>
+    <span><span class="k">24H VOL:</span> <span class="pending-value">...</span></span>
     <span class="ticker-sep">|</span>
-    <span><span class="k">HOLDERS:</span> <span id="tickHolders">3,842</span></span>
+    <span><span class="k">HOLDERS:</span> <span class="pending-value">...</span></span>
     <span class="chain-badge">⛓ ON ROBINHOOD CHAIN</span>
   </div>
 </div>
@@ -266,8 +258,6 @@
   <span>ROBLOX STONKS INDEX PROTOCOL. &copy; <span id="year">2026</span> RSX PROTOCOL. ALL RIGHTS RESERVED.</span>
   <div class="footer-hints"><span>↑↓ NAVIGATE</span><span>↵ SELECT</span></div>
 </footer>
-
-<div class="toast" id="toast"></div>
 
 <script src="js/main.js"></script>
 </body>
