@@ -56,8 +56,28 @@
       sidebarNav.insertAdjacentElement("beforebegin", sidebarActions);
     }
   }
-  placeSidebarActions(mobileQuery.matches);
-  mobileQuery.addEventListener("change", (e) => placeSidebarActions(e.matches));
+  /* ---------------- move mode toggle to page bottom on mobile ---------------- */
+  const modeToggle = document.querySelector(".mode-toggle");
+  const sidebarEl = document.querySelector(".sidebar");
+  const mainEl = document.querySelector("main.main");
+
+  function placeModeToggle(isMobile) {
+    if (!modeToggle) return;
+    if (isMobile) {
+      if (mainEl && modeToggle.parentElement !== mainEl) {
+        mainEl.appendChild(modeToggle);
+      }
+    } else if (sidebarEl && modeToggle.parentElement !== sidebarEl) {
+      sidebarEl.appendChild(modeToggle);
+    }
+  }
+
+  function applyResponsivePlacement(isMobile) {
+    placeSidebarActions(isMobile);
+    placeModeToggle(isMobile);
+  }
+  applyResponsivePlacement(mobileQuery.matches);
+  mobileQuery.addEventListener("change", (e) => applyResponsivePlacement(e.matches));
 
   /* ---------------- active-section nav highlighting ---------------- */
   const navItems = Array.from(document.querySelectorAll(".nav-item"));
