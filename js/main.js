@@ -40,6 +40,25 @@
   }, { threshold: 0.15 });
   revealEls.forEach((el) => revealObserver.observe(el));
 
+  /* ---------------- move CTA buttons under hero copy on mobile ---------------- */
+  const sidebarActions = document.getElementById("sidebarActions");
+  const heroTagline = document.querySelector(".hero-tagline");
+  const sidebarNav = document.querySelector(".sidebar nav");
+  const mobileQuery = matchMedia("(max-width: 900px)");
+
+  function placeSidebarActions(isMobile) {
+    if (!sidebarActions) return;
+    if (isMobile) {
+      if (heroTagline && sidebarActions.previousElementSibling !== heroTagline) {
+        heroTagline.insertAdjacentElement("afterend", sidebarActions);
+      }
+    } else if (sidebarNav && sidebarActions.nextElementSibling !== sidebarNav) {
+      sidebarNav.insertAdjacentElement("beforebegin", sidebarActions);
+    }
+  }
+  placeSidebarActions(mobileQuery.matches);
+  mobileQuery.addEventListener("change", (e) => placeSidebarActions(e.matches));
+
   /* ---------------- active-section nav highlighting ---------------- */
   const navItems = Array.from(document.querySelectorAll(".nav-item"));
   const sections = navItems
