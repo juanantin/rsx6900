@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="sealShine" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#ff5b4d"/>
+      <stop offset="55%" stop-color="#e8352b"/>
+      <stop offset="100%" stop-color="#b8190f"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="96" fill="url(#sealShine)" stroke="#111111" stroke-width="3"/>
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#111111" stroke-width="1.5" opacity="0.35"/>
+  <g fill="#ffffff" stroke="#111111" stroke-width="2.5" stroke-linejoin="round">
+    <rect x="90" y="34" width="20" height="20" transform="rotate(45 100 44)"/>
+    <rect x="90" y="146" width="20" height="20" transform="rotate(45 100 156)"/>
+  </g>
+  <g fill="#e8352b" stroke="#111111" stroke-width="1">
+    <rect x="96" y="40" width="8" height="8" transform="rotate(45 100 44)"/>
+    <rect x="96" y="152" width="8" height="8" transform="rotate(45 100 156)"/>
+  </g>
+  <ellipse cx="100" cy="100" rx="70" ry="22" fill="none" stroke="#111111" stroke-width="7" opacity="0.9"/>
+  <text x="100" y="94" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="40" fill="#ffffff" stroke="#111111" stroke-width="2" letter-spacing="-1">RSX</text>
+  <text x="100" y="132" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="40" fill="#ffffff" stroke="#111111" stroke-width="2" letter-spacing="-1">6900</text>
+</svg>

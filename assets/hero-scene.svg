@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" width="900" height="620" role="img" aria-label="Blocky avatar holding a rising stonks arrow above a city skyline">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8fd3ff"/>
+      <stop offset="55%" stop-color="#bfe8ff"/>
+      <stop offset="100%" stop-color="#eef8ff"/>
+    </linearGradient>
+    <linearGradient id="armGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#171717"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </linearGradient>
+  </defs>
+  <style>
+    .cube-float { transform-box: fill-box; transform-origin: center; animation: cubeFloat 4.5s ease-in-out infinite; }
+    .cube-1 { animation-duration: 4.2s; }
+    .cube-2 { animation-duration: 5.1s; animation-delay: -1.2s; }
+    .cube-3 { animation-duration: 3.6s; animation-delay: -0.6s; }
+    .cube-4 { animation-duration: 4.8s; animation-delay: -2s; }
+    #avatar { transform-box: fill-box; transform-origin: center; animation: avatarBob 3.4s ease-in-out infinite; }
+    @keyframes cubeFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-16px) rotate(8deg); }
+    }
+    @keyframes avatarBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cube-float, #avatar { animation: none; }
+    }
+  </style>
+
+  <rect x="0" y="0" width="900" height="620" fill="url(#sky)"/>
+
+  <g opacity="0.9">
+    <circle cx="740" cy="120" r="46" fill="#ffffff" opacity="0.55"/>
+    <circle cx="150" cy="90" r="30" fill="#ffffff" opacity="0.5"/>
+  </g>
+
+  <g id="clouds" fill="#ffffff" opacity="0.8">
+    <ellipse cx="120" cy="140" rx="60" ry="18"/>
+    <ellipse cx="170" cy="130" rx="40" ry="14"/>
+    <ellipse cx="770" cy="200" rx="70" ry="20"/>
+    <ellipse cx="820" cy="190" rx="40" ry="14"/>
+  </g>
+
+  <g id="floating-cubes">
+    <g class="cube-float cube-1">
+      <rect x="60" y="230" width="34" height="34" fill="#e8352b" stroke="#12120f" stroke-width="3" transform="rotate(18 77 247)"/>
+    </g>
+    <g class="cube-float cube-2">
+      <rect x="810" y="330" width="26" height="26" fill="#ffffff" stroke="#12120f" stroke-width="3" transform="rotate(-12 823 343)"/>
+    </g>
+    <g class="cube-float cube-3">
+      <rect x="770" y="120" width="20" height="20" fill="#d7ff33" stroke="#12120f" stroke-width="3" transform="rotate(30 780 130)"/>
+    </g>
+    <g class="cube-float cube-4">
+      <rect x="40" y="380" width="22" height="22" fill="#ffffff" stroke="#12120f" stroke-width="3" transform="rotate(-20 51 391)"/>
+    </g>
+  </g>
+
+  <g id="skyline" fill="#12120f">
+    <rect x="0" y="470" width="900" height="150"/>
+    <rect x="20" y="380" width="70" height="240"/>
+    <rect x="105" y="410" width="55" height="210"/>
+    <rect x="175" y="350" width="80" height="270"/>
+    <rect x="700" y="360" width="75" height="260"/>
+    <rect x="790" y="400" width="60" height="220"/>
+    <rect x="620" y="420" width="55" height="200"/>
+    <g fill="#eef8ff" opacity="0.85">
+      <rect x="35" y="400" width="10" height="10"/>
+      <rect x="55" y="400" width="10" height="10"/>
+      <rect x="35" y="425" width="10" height="10"/>
+      <rect x="55" y="425" width="10" height="10"/>
+      <rect x="35" y="450" width="10" height="10"/>
+      <rect x="55" y="450" width="10" height="10"/>
+      <rect x="190" y="375" width="12" height="12"/>
+      <rect x="215" y="375" width="12" height="12"/>
+      <rect x="190" y="405" width="12" height="12"/>
+      <rect x="215" y="405" width="12" height="12"/>
+      <rect x="190" y="435" width="12" height="12"/>
+      <rect x="215" y="435" width="12" height="12"/>
+      <rect x="715" y="385" width="12" height="12"/>
+      <rect x="740" y="385" width="12" height="12"/>
+      <rect x="715" y="415" width="12" height="12"/>
+      <rect x="740" y="415" width="12" height="12"/>
+    </g>
+  </g>
+
+  <polyline points="70,540 220,470 340,500 470,360 600,410 760,260" fill="none" stroke="#2f8f3e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+  <polygon points="760,260 730,275 745,300" fill="#2f8f3e" opacity="0.85"/>
+
+  <g id="avatar" transform="translate(330,150)">
+    <rect x="60" y="330" width="150" height="140" rx="6" fill="#e8352b" stroke="#12120f" stroke-width="6"/>
+    <circle cx="150" cy="330" r="18" fill="#12120f"/>
+    <rect x="60" y="180" width="150" height="150" rx="10" fill="#171717" stroke="#12120f" stroke-width="6"/>
+    <rect x="88" y="200" width="94" height="46" rx="6" fill="#e8352b" stroke="#12120f" stroke-width="4"/>
+    <rect x="60" y="330" width="30" height="140" fill="#050505"/>
+    <rect x="180" y="330" width="30" height="140" fill="#050505"/>
+
+    <g id="rightArm" transform="rotate(-58 205 330)">
+      <rect x="188" y="200" width="34" height="150" rx="14" fill="url(#armGrad)" stroke="#12120f" stroke-width="4"/>
+    </g>
+    <g id="leftArm">
+      <rect x="45" y="345" width="30" height="110" rx="14" fill="url(#armGrad)" stroke="#12120f" stroke-width="4"/>
+    </g>
+
+    <circle cx="135" cy="95" r="82" fill="#ffd35c" stroke="#12120f" stroke-width="6"/>
+    <g fill="#12120f">
+      <circle cx="108" cy="90" r="7"/>
+      <circle cx="162" cy="90" r="7"/>
+      <path d="M105 118 Q135 140 165 118" stroke="#12120f" stroke-width="6" fill="none" stroke-linecap="round"/>
+    </g>
+    <path d="M60 55 Q135 -10 210 55 L210 75 Q135 25 60 75 Z" fill="#e8352b" stroke="#12120f" stroke-width="6"/>
+    <ellipse cx="205" cy="45" rx="26" ry="14" fill="#e8352b" stroke="#12120f" stroke-width="5"/>
+    <rect x="192" y="30" width="10" height="10" fill="#ffffff" stroke="#12120f" stroke-width="2" transform="rotate(45 197 35)"/>
+
+    <g id="heldCube" transform="translate(150,10) rotate(-8)">
+      <rect x="0" y="0" width="80" height="80" fill="#e8352b" stroke="#12120f" stroke-width="6"/>
+      <rect x="24" y="24" width="32" height="32" fill="#ffffff" stroke="#12120f" stroke-width="4"/>
+    </g>
+  </g>
+</svg>
