@@ -66,19 +66,6 @@
   if (copyContract) copyContract.addEventListener("click", () => copyText(FULL_ADDRESS, "CONTRACT"));
   if (copyTreasury) copyTreasury.addEventListener("click", () => copyText(FULL_ADDRESS, "TREASURY ADDRESS"));
 
-  /* ---------------- live clock ---------------- */
-  const clockEl = document.getElementById("liveClock");
-  function tickClock() {
-    if (!clockEl) return;
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2, "0");
-    const mm = String(now.getMinutes()).padStart(2, "0");
-    const ss = String(now.getSeconds()).padStart(2, "0");
-    clockEl.textContent = `${hh}:${mm}:${ss}`;
-  }
-  tickClock();
-  setInterval(tickClock, 1000);
-
   /* ---------------- airdrop countdown ---------------- */
   const countdownEl = document.getElementById("airdropCountdown");
   const countdownMiniEl = document.getElementById("roundCountdownMini");
@@ -280,51 +267,6 @@
     });
   }
 
-  /* ---------------- audio player (visual simulation, no real audio) ---------------- */
-  const TRACKS = ["STONKS ONLY", "DIAMOND HANDS FM", "TO THE MOON (LOFI)", "BRRRR THEME"];
-  let trackIndex = 0;
-  let isPlaying = true;
-  const trackNameEl = document.getElementById("trackName");
-  const playerBars = document.getElementById("playerBars");
-  const playPauseBtn = document.getElementById("playPause");
-  const playerToggleBtn = document.getElementById("playerToggle");
-  const prevTrackBtn = document.getElementById("prevTrack");
-  const nextTrackBtn = document.getElementById("nextTrack");
-  const stopTrackBtn = document.getElementById("stopTrack");
-
-  function renderBars() {
-    if (!playerBars) return;
-    playerBars.innerHTML = "";
-    for (let i = 0; i < 12; i++) {
-      const bar = document.createElement("span");
-      bar.style.animationDelay = (Math.random() * 0.6).toFixed(2) + "s";
-      bar.style.height = (4 + Math.random() * 14) + "px";
-      playerBars.appendChild(bar);
-    }
-  }
-  renderBars();
-
-  function applyPlayState() {
-    if (playerBars) playerBars.classList.toggle("paused", !isPlaying);
-    if (playPauseBtn) playPauseBtn.textContent = isPlaying ? "⏸" : "▶";
-    if (playerToggleBtn) playerToggleBtn.textContent = isPlaying ? "▮▮ PAUSE" : "▶ PLAY";
-  }
-  function setTrack(i) {
-    trackIndex = (i + TRACKS.length) % TRACKS.length;
-    if (trackNameEl) trackNameEl.textContent = TRACKS[trackIndex];
-    renderBars();
-  }
-  function togglePlay() {
-    isPlaying = !isPlaying;
-    applyPlayState();
-  }
-  if (playPauseBtn) playPauseBtn.addEventListener("click", togglePlay);
-  if (playerToggleBtn) playerToggleBtn.addEventListener("click", togglePlay);
-  if (nextTrackBtn) nextTrackBtn.addEventListener("click", () => setTrack(trackIndex + 1));
-  if (prevTrackBtn) prevTrackBtn.addEventListener("click", () => setTrack(trackIndex - 1));
-  if (stopTrackBtn) stopTrackBtn.addEventListener("click", () => { isPlaying = false; applyPlayState(); });
-  applyPlayState();
-
   /* ---------------- live-feeling data jitter (client-side demo only) ---------------- */
   const state = { price: 0.004206, mcap: 4.2, vol: 1.28, holders: 3842 };
   const tickPrice = document.getElementById("tickPrice");
@@ -368,7 +310,7 @@
   if (matchMedia("(hover: hover)").matches) {
     const HOVER_SOUND_SELECTOR =
       ".btn, .nav-item a, .mode-switch button, .link-card, .social-row a, " +
-      ".player-controls button, .wallet-mini, .copyable, .info-card, .media-card";
+      ".wallet-mini, .copyable, .info-card";
 
     let audioCtx = null;
     function ensureAudio() {

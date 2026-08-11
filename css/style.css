@@ -388,83 +388,6 @@ button { font-family: inherit; }
 .hero-media-inner { position: absolute; inset: 0; transition: transform 0.25s ease-out; will-change: transform; }
 .hero-video { background: #bfe8ff; }
 
-.hero-consoles {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: min(280px, 82%);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 2;
-}
-
-.console {
-  background: var(--black-panel);
-  color: var(--lime);
-  border: 2px solid var(--line);
-  box-shadow: var(--shadow-sm);
-  font-size: 10.5px;
-  padding: 10px 12px;
-}
-.console-head {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  margin-bottom: 8px;
-  color: #fff;
-}
-.console-head .led {
-  width: 7px; height: 7px; background: var(--red); border-radius: 1px;
-  box-shadow: 0 0 6px var(--red);
-  animation: blink 1.4s steps(2) infinite;
-}
-.console-head .status-ok { margin-left: auto; color: var(--lime); font-size: 9px; }
-.console-row { display: flex; justify-content: space-between; gap: 8px; padding: 2px 0; opacity: 0.92; }
-.console-row .k { color: #9fa89a; }
-.console-time {
-  margin-top: 6px;
-  font-family: var(--font-display);
-  font-size: 15px;
-  color: var(--lime);
-  letter-spacing: 0.04em;
-}
-
-.player-track { color: #fff; margin-bottom: 6px; }
-.player-track .now { color: #9fa89a; display: block; font-size: 9px; }
-.player-track .song { color: var(--red); font-weight: 700; }
-.player-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 20px;
-  margin: 8px 0;
-}
-.player-bars span {
-  width: 3px;
-  background: var(--lime);
-  animation: bars 0.9s ease-in-out infinite;
-  opacity: 0.85;
-}
-.player-bars.paused span { animation-play-state: paused; opacity: 0.3; }
-.player-controls { display: flex; align-items: center; gap: 8px; }
-.player-controls button {
-  background: transparent;
-  border: 1px solid #3a3a36;
-  color: var(--lime);
-  width: 22px; height: 22px;
-  cursor: pointer;
-  font-size: 10px;
-  display: flex; align-items: center; justify-content: center;
-}
-.player-controls button:hover { background: #1b1b18; }
-
-@keyframes bars {
-  0%, 100% { height: 4px; }
-  50% { height: 18px; }
-}
 @keyframes blink {
   50% { opacity: 0.15; }
 }
@@ -835,7 +758,6 @@ button { font-family: inherit; }
   .nav-hint { display: none; }
   .hero { grid-template-columns: 1fr; }
   .hero-media { order: -1; min-height: 260px; }
-  .hero-consoles { position: static; width: 100%; margin-top: 10px; }
   .two-col { grid-template-columns: 1fr; }
 }
 
