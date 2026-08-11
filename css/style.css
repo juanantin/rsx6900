@@ -128,9 +128,6 @@ button { font-family: inherit; }
 .logo-tile {
   width: 56px;
   height: 56px;
-  background: var(--red);
-  border: 2px solid var(--line);
-  box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -757,10 +754,11 @@ button { font-family: inherit; }
     position: relative;
     top: 0;
     min-height: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
   }
+  .sidebar-actions { flex-direction: row; flex-wrap: wrap; }
+  .sidebar-actions .btn { flex: 1 1 120px; }
   .nav-list { flex-direction: row; flex-wrap: wrap; }
   .nav-item a { padding: 7px 9px; }
   .sidebar-spacer { display: none; }
