@@ -28,6 +28,39 @@
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  /* ---------------- copy contract address ---------------- */
+  const CONTRACT_ADDRESS = "0x1bef1e4d1f98d91d99f1f2f384490f3999d7ccd9";
+  const copyCA = document.getElementById("copyCA");
+  if (copyCA) {
+    const caLabel = copyCA.querySelector(".ca-label");
+    const originalLabel = caLabel.textContent;
+    let resetTimer = null;
+
+    function showCopied() {
+      clearTimeout(resetTimer);
+      caLabel.textContent = "COPIED!";
+      resetTimer = setTimeout(() => { caLabel.textContent = originalLabel; }, 1400);
+    }
+    function fallbackCopy(text, cb) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (err) { /* no-op */ }
+      document.body.removeChild(ta);
+      cb();
+    }
+    copyCA.addEventListener("click", () => {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(CONTRACT_ADDRESS).then(showCopied).catch(() => fallbackCopy(CONTRACT_ADDRESS, showCopied));
+      } else {
+        fallbackCopy(CONTRACT_ADDRESS, showCopied);
+      }
+    });
+  }
+
   /* ---------------- scroll reveal ---------------- */
   const revealEls = document.querySelectorAll(".reveal");
   const revealObserver = new IntersectionObserver((entries) => {

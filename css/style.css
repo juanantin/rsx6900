@@ -605,8 +605,6 @@ button { font-family: inherit; }
   letter-spacing: 0.08em;
   animation: blink 1.3s steps(2) infinite;
 }
-.wallet-mini.is-pending { cursor: default; }
-.wallet-mini.is-pending:hover { background: var(--panel); transform: none; box-shadow: var(--shadow-sm); }
 .ticker-live.pending .dot { background: var(--muted); box-shadow: none; animation: none; }
 
 /* ---------------- ticker bar + footer ---------------- */
