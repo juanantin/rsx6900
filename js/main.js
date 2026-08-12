@@ -28,38 +28,52 @@
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------------- copy contract address ---------------- */
+  /* ---------------- copy-to-clipboard (CA badge + treasury) ---------------- */
   const CONTRACT_ADDRESS = "0x1bef1e4d1f98d91d99f1f2f384490f3999d7ccd9";
-  const copyCA = document.getElementById("copyCA");
-  if (copyCA) {
-    const caLabel = copyCA.querySelector(".ca-label");
-    const originalLabel = caLabel.textContent;
+  const TREASURY_ADDRESS = "0xDFe8d771C5187E690D3B8063795Fc5254Bb5DcE6";
+
+  function fallbackCopy(text, cb) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (err) { /* no-op */ }
+    document.body.removeChild(ta);
+    cb();
+  }
+
+  function setupCopyToClipboard(el, fullText) {
+    if (!el) return;
+    const label = el.querySelector(".ca-label");
+    if (!label) return;
+    const originalLabel = label.textContent;
     let resetTimer = null;
 
     function showCopied() {
       clearTimeout(resetTimer);
-      caLabel.textContent = "COPIED!";
-      resetTimer = setTimeout(() => { caLabel.textContent = originalLabel; }, 1400);
+      label.textContent = "COPIED!";
+      resetTimer = setTimeout(() => { label.textContent = originalLabel; }, 1400);
     }
-    function fallbackCopy(text, cb) {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand("copy"); } catch (err) { /* no-op */ }
-      document.body.removeChild(ta);
-      cb();
-    }
-    copyCA.addEventListener("click", () => {
+    function copy() {
       if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(CONTRACT_ADDRESS).then(showCopied).catch(() => fallbackCopy(CONTRACT_ADDRESS, showCopied));
+        navigator.clipboard.writeText(fullText).then(showCopied).catch(() => fallbackCopy(fullText, showCopied));
       } else {
-        fallbackCopy(CONTRACT_ADDRESS, showCopied);
+        fallbackCopy(fullText, showCopied);
+      }
+    }
+    el.addEventListener("click", copy);
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        copy();
       }
     });
   }
+
+  setupCopyToClipboard(document.getElementById("copyCA"), CONTRACT_ADDRESS);
+  setupCopyToClipboard(document.getElementById("copyTreasury"), TREASURY_ADDRESS);
 
   /* ---------------- scroll reveal ---------------- */
   const revealEls = document.querySelectorAll(".reveal");
@@ -185,7 +199,7 @@
   if (matchMedia("(hover: hover)").matches) {
     const HOVER_SOUND_SELECTOR =
       ".btn, .nav-item a, .mode-switch button, .link-card, .social-row a, " +
-      ".wallet-mini, .info-card";
+      ".wallet-mini, .info-card, .copyable";
 
     let audioCtx = null;
     function ensureAudio() {

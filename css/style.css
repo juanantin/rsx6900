@@ -531,6 +531,8 @@ button { font-family: inherit; }
 .status-row .v { font-weight: 700; text-align: right; }
 .status-row .v a { text-decoration: underline; text-decoration-color: var(--muted); text-underline-offset: 2px; }
 .status-row .v a:hover { color: var(--red); text-decoration-color: var(--red); }
+.status-row .v.copyable { cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.status-row .v.copyable:hover { color: var(--red); }
 .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pos); display: inline-block; box-shadow: 0 0 6px var(--pos); animation: blink 2s steps(2) infinite; }
 
 /* join panel */
