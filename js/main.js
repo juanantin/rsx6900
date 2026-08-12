@@ -140,6 +140,73 @@
   refreshDexData();
   setInterval(refreshDexData, DEX_REFRESH_MS);
 
+  /* ---------------- live basket data (fees, rounds, airdrops, holders) ---------------- */
+  const BASKET_API_URL = "https://www.backed.is/api/baskets/0xDFe8d771C5187E690D3B8063795Fc5254Bb5DcE6";
+  const BASKET_REFRESH_MS = 60000;
+
+  function formatUsd(n) {
+    if (typeof n !== "number" || Number.isNaN(n)) return null;
+    return "$" + Math.round(n).toLocaleString("en-US");
+  }
+
+  async function refreshBasketData() {
+    let data;
+    try {
+      const res = await fetch(BASKET_API_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("bad status " + res.status);
+      data = await res.json();
+    } catch (err) {
+      return; // unreachable / CORS-blocked — leave existing snapshot in place
+    }
+    if (!data || typeof data.feesUsd !== "number") return;
+
+    setLiveValue(document.getElementById("statFees"), formatUsd(data.feesUsd));
+    if (typeof data.feesEth === "number") {
+      setLiveValue(document.getElementById("statFeesDelta"), data.feesEth.toFixed(6) + " ETH");
+    }
+
+    const distributedEntry = Array.isArray(data.distributed) ? data.distributed[0] : null;
+    if (distributedEntry && typeof distributedEntry.amount === "number") {
+      const amountStr = distributedEntry.amount.toFixed(4);
+      setLiveValue(document.getElementById("statStocks"), amountStr);
+      setLiveValue(document.getElementById("statStocksDelta"), formatUsd(distributedEntry.usd) + " DISTRIBUTED");
+      setLiveValue(document.getElementById("distDistributed"), formatUsd(distributedEntry.usd));
+      setLiveValue(
+        document.getElementById("distDistributedSub"),
+        `${amountStr} ${distributedEntry.symbol} · ${data.rounds} ROUNDS PAID`
+      );
+    }
+
+    if (typeof data.rounds === "number") {
+      setLiveValue(document.getElementById("statRound"), "#" + data.rounds);
+    }
+    if (typeof data.holdersPaid === "number") {
+      setLiveValue(document.getElementById("statRoundDelta"), data.holdersPaid.toLocaleString("en-US") + " WALLET PAYMENTS");
+    }
+
+    if (typeof data.feesEth === "number" && typeof data.protocolEth === "number" && typeof data.spentEth === "number") {
+      const waitingEth = data.feesEth - data.protocolEth - data.spentEth;
+      setLiveValue(document.getElementById("distWaiting"), waitingEth.toFixed(4) + " ETH");
+    }
+
+    if (typeof data.feesEth === "number" && typeof data.protocolEth === "number" && data.feesEth > 0) {
+      const holderSharePct = Math.round((1 - data.protocolEth / data.feesEth) * 100);
+      setLiveValue(document.getElementById("statHolderShare"), holderSharePct + "% OF FEES");
+    }
+
+    const latestPayout = Array.isArray(data.events) ? data.events.find((e) => e.kind === "payout") : null;
+    if (latestPayout && typeof latestPayout.holders === "number") {
+      setLiveValue(document.getElementById("statHolders"), latestPayout.holders.toLocaleString("en-US"));
+      setLiveValue(document.getElementById("statHoldersDelta"), "LAST ROUND PAYOUT");
+    }
+
+    const dashChip = document.getElementById("dashChip");
+    if (dashChip) dashChip.textContent = "LIVE · SOURCE: BASKET";
+  }
+
+  refreshBasketData();
+  setInterval(refreshBasketData, BASKET_REFRESH_MS);
+
   /* ---------------- scroll reveal ---------------- */
   const revealEls = document.querySelectorAll(".reveal");
   const revealObserver = new IntersectionObserver((entries) => {
