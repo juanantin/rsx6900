@@ -75,10 +75,8 @@
   setupCopyToClipboard(document.getElementById("copyCA"), CONTRACT_ADDRESS);
   setupCopyToClipboard(document.getElementById("copyTreasury"), TREASURY_ADDRESS);
 
-  /* ---------------- live market data (Dexscreener) ---------------- */
-  const DEX_CHAIN_ID = "robinhood";
-  const DEX_PAIR_ID = "0x2afde58b40cca5093c86208aae5d2a0a14530cde316a09362adfd30d13e16b7c";
-  const DEX_API_URL = `https://api.dexscreener.com/latest/dex/pairs/${DEX_CHAIN_ID}/${DEX_PAIR_ID}`;
+  /* ---------------- live market data (Dexscreener, via same-origin proxy) ---------------- */
+  const DEX_API_URL = "/api/dex";
   const DEX_REFRESH_MS = 45000;
 
   function formatCompactUsd(n) {
@@ -140,8 +138,8 @@
   refreshDexData();
   setInterval(refreshDexData, DEX_REFRESH_MS);
 
-  /* ---------------- live basket data (fees, rounds, airdrops, holders) ---------------- */
-  const BASKET_API_URL = "https://www.backed.is/api/baskets/0xDFe8d771C5187E690D3B8063795Fc5254Bb5DcE6";
+  /* ---------------- live basket data (fees, rounds, airdrops, holders), via same-origin proxy ---------------- */
+  const BASKET_API_URL = "/api/basket";
   const BASKET_REFRESH_MS = 60000;
 
   function formatUsd(n) {
