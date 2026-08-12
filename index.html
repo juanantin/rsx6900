@@ -136,14 +136,14 @@
           <div class="stat-card reveal">
             <div class="stat-icon">▲</div>
             <div class="stat-label">Market Cap</div>
-            <div class="stat-value pending-value">...</div>
+            <div class="stat-value pending-value" id="statMcap">...</div>
             <div class="stat-delta muted-delta">FULLY DILUTED</div>
           </div>
           <div class="stat-card reveal">
             <div class="stat-icon">▥</div>
             <div class="stat-label">Volume 24H</div>
-            <div class="stat-value pending-value">...</div>
-            <div class="stat-delta pending-value">...</div>
+            <div class="stat-value pending-value" id="statVol">...</div>
+            <div class="stat-delta pending-value" id="statVolDelta">...</div>
           </div>
         </div>
 
@@ -189,7 +189,7 @@
           </div>
         </div>
 
-        <p class="disclaimer">FEES, AIRDROP AND TREASURY FIGURES ARE A MANUAL SNAPSHOT PULLED FROM THE LIVE BASKET PAGE. MARKET CAP, 24H VOLUME AND HOLDERS ARE STILL PENDING — THOSE COME FROM DEXSCREENER.</p>
+        <p class="disclaimer">FEES, AIRDROP AND TREASURY FIGURES ARE A MANUAL SNAPSHOT FROM THE LIVE BASKET PAGE. MARKET CAP, PRICE AND 24H VOLUME REFRESH LIVE FROM DEXSCREENER. HOLDERS COUNT ISN'T EXPOSED BY THAT API AND STAYS PENDING.</p>
       </section>
 
       <!-- ============ ABOUT ============ -->
@@ -246,13 +246,13 @@
 <!-- ============ TICKER BAR ============ -->
 <div class="ticker-bar">
   <div class="ticker-inner">
-    <span class="ticker-live pending"><span class="dot"></span>$RSX PENDING</span>
+    <span class="ticker-live pending" id="tickerLive"><span class="dot"></span>$RSX PENDING</span>
     <span class="ticker-sep">|</span>
-    <span><span class="k">MCAP:</span> <span class="pending-value">...</span></span>
+    <span><span class="k">MCAP:</span> <span class="pending-value" id="tickMcap">...</span></span>
     <span class="ticker-sep">|</span>
-    <span><span class="k">PRICE:</span> <span class="pending-value">...</span></span>
+    <span><span class="k">PRICE:</span> <span class="pending-value" id="tickPrice">...</span></span>
     <span class="ticker-sep">|</span>
-    <span><span class="k">24H VOL:</span> <span class="pending-value">...</span></span>
+    <span><span class="k">24H VOL:</span> <span class="pending-value" id="tickVol">...</span></span>
     <span class="ticker-sep">|</span>
     <span><span class="k">HOLDERS:</span> <span class="pending-value">...</span></span>
     <span class="chain-badge">⛓ ON ROBINHOOD CHAIN</span>

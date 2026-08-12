@@ -75,6 +75,71 @@
   setupCopyToClipboard(document.getElementById("copyCA"), CONTRACT_ADDRESS);
   setupCopyToClipboard(document.getElementById("copyTreasury"), TREASURY_ADDRESS);
 
+  /* ---------------- live market data (Dexscreener) ---------------- */
+  const DEX_CHAIN_ID = "robinhood";
+  const DEX_PAIR_ID = "0x2afde58b40cca5093c86208aae5d2a0a14530cde316a09362adfd30d13e16b7c";
+  const DEX_API_URL = `https://api.dexscreener.com/latest/dex/pairs/${DEX_CHAIN_ID}/${DEX_PAIR_ID}`;
+  const DEX_REFRESH_MS = 45000;
+
+  function formatCompactUsd(n) {
+    if (typeof n !== "number" || Number.isNaN(n)) return null;
+    return "$" + new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 2 }).format(n);
+  }
+  function formatPrice(n) {
+    if (typeof n !== "number" || Number.isNaN(n)) return null;
+    const decimals = n < 1 ? 6 : 2;
+    return "$" + n.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  }
+  function formatPercent(n) {
+    if (typeof n !== "number" || Number.isNaN(n)) return null;
+    return (n >= 0 ? "+ " : "") + n.toFixed(1) + "% (24H)";
+  }
+
+  function setLiveValue(el, text) {
+    if (!el || text == null) return;
+    el.textContent = text;
+    el.classList.remove("pending-value");
+  }
+
+  async function refreshDexData() {
+    let pair;
+    try {
+      const res = await fetch(DEX_API_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("bad status " + res.status);
+      const data = await res.json();
+      pair = (Array.isArray(data.pairs) && data.pairs[0]) || data.pair || null;
+    } catch (err) {
+      return; // API unreachable or shape changed — leave existing "..." pending state
+    }
+    if (!pair) return;
+
+    const marketCap = typeof pair.marketCap === "number" ? pair.marketCap : pair.fdv;
+    const priceUsd = pair.priceUsd != null ? parseFloat(pair.priceUsd) : NaN;
+    const vol24h = pair.volume && typeof pair.volume.h24 === "number" ? pair.volume.h24 : NaN;
+    const priceChange24h = pair.priceChange && typeof pair.priceChange.h24 === "number" ? pair.priceChange.h24 : NaN;
+
+    const mcapStr = formatCompactUsd(marketCap);
+    const priceStr = formatPrice(priceUsd);
+    const volStr = formatCompactUsd(vol24h);
+    const changeStr = formatPercent(priceChange24h);
+
+    setLiveValue(document.getElementById("statMcap"), mcapStr);
+    setLiveValue(document.getElementById("statVol"), volStr);
+    setLiveValue(document.getElementById("statVolDelta"), changeStr);
+    setLiveValue(document.getElementById("tickMcap"), mcapStr);
+    setLiveValue(document.getElementById("tickPrice"), priceStr);
+    setLiveValue(document.getElementById("tickVol"), volStr);
+
+    const tickerLive = document.getElementById("tickerLive");
+    if (tickerLive && mcapStr) {
+      tickerLive.classList.remove("pending");
+      tickerLive.lastChild.textContent = "$RSX LIVE";
+    }
+  }
+
+  refreshDexData();
+  setInterval(refreshDexData, DEX_REFRESH_MS);
+
   /* ---------------- scroll reveal ---------------- */
   const revealEls = document.querySelectorAll(".reveal");
   const revealObserver = new IntersectionObserver((entries) => {
