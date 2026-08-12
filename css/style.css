@@ -467,6 +467,8 @@ button { font-family: inherit; }
 }
 .stat-card .stat-delta { font-size: 10.5px; color: var(--pos); }
 .stat-card .stat-delta.muted-delta { color: var(--muted); }
+a.stat-delta { text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 2px; transition: text-decoration-color 0.12s ease; }
+a.stat-delta:hover { text-decoration-color: currentColor; }
 
 /* ---------------- dashboard row ---------------- */
 .dash-row {

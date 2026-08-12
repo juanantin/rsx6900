@@ -4,7 +4,7 @@ Static marketing/dashboard site for RSX6900, a meme-finance index protocol. Ever
 
 ## Stack
 
-Static HTML/CSS/JS plus two tiny Vercel serverless functions (`api/*.js`) that proxy third-party APIs the browser can't call directly due to CORS. No build step, no npm dependencies. Deploy to Vercel with the "Other" framework preset, no build command, `.` as the output directory — Vercel auto-detects the `api/` folder as serverless functions.
+Static HTML/CSS/JS plus three tiny Vercel serverless functions (`api/*.js`) that proxy third-party APIs the browser can't call directly due to CORS. No build step, no npm dependencies. Deploy to Vercel with the "Other" framework preset, no build command, `.` as the output directory — Vercel auto-detects the `api/` folder as serverless functions.
 
 ```
 index.html               Page markup (hero, dashboard, about, links)
@@ -13,8 +13,9 @@ js/main.js                Interactivity: theme toggle, scroll-reveal, active-sec
                            keyboard nav, glitch pulses, hero parallax, digital hover sound,
                            mobile responsive relocation (CTA buttons, mode toggle), and the
                            live dashboard fetches described below
-api/basket.js             Serverless proxy for the Backed basket API (fees, rounds, airdrops, holders)
+api/basket.js             Serverless proxy for the Backed basket API (fees, rounds, airdrops)
 api/dex.js                Serverless proxy for the Dexscreener pairs API (market cap, price, 24h volume)
+api/holders.js            Serverless proxy for the Robinhood Chain Blockscout token API (holder count)
 assets/logo.svg           RSX6900 seal logo (favicon + sidebar logo)
 assets/hero-scene.svg     Fallback hero illustration (used if the background video can't load)
 assets/rsx-bg.mp4         Hero background video (muted, looping)
@@ -36,7 +37,7 @@ Note this won't serve `api/*.js` — the dashboard will just fall back to its ha
 
 ## Notes
 
-- Dashboard values fetch live from two sources via the serverless proxies: `js/main.js` calls same-origin `/api/basket` (fees collected, $RBLX airdropped, distribution round, holder share, holders — the last-round payout count, not a total unique-holder count) and `/api/dex` (market cap, price, 24h volume) every 45–60s. If either call fails (network error, upstream schema change, etc.) the page quietly falls back to the last hardcoded snapshot in `index.html` instead of breaking — look for the "MANUAL SNAPSHOT" vs "LIVE" text in the dashboard header chip to tell which state it's in.
-- The Backed and Dexscreener APIs are proxied through `api/basket.js` / `api/dex.js` rather than called directly from the browser because `backed.is` doesn't set CORS headers permitting cross-origin requests. The proxies fetch server-side (not subject to CORS) and hand the JSON back same-origin.
+- Dashboard values fetch live from three sources via the serverless proxies: `js/main.js` calls same-origin `/api/basket` (fees collected, $RBLX airdropped, distribution round, holder share) every 60s, `/api/dex` (market cap, price, 24h volume) every 45s, and `/api/holders` (real unique-holder count from the chain explorer) every 90s. Holders falls back to an estimate derived from the basket API's last payout round if the explorer call fails, and falls back further to the hardcoded snapshot if both fail. If a call fails (network error, upstream schema change, etc.) the page quietly keeps the last known-good value instead of breaking — look for the "MANUAL SNAPSHOT" vs "LIVE" text in the dashboard header chip to tell which state it's in.
+- These third-party APIs are proxied (`api/basket.js`, `api/dex.js`, `api/holders.js`) rather than called directly from the browser because `backed.is` and the Blockscout explorer don't reliably set CORS headers permitting cross-origin requests. The proxies fetch server-side (not subject to CORS) and hand the JSON back same-origin.
 - The hero background is the provided `assets/rsx_web.MOV`, transcoded to `rsx-bg.mp4`/`rsx-bg.webm` for browser compatibility. The hero and logo artwork are original SVGs (not photographic assets), styled to match the requested neubrutalist/terminal aesthetic.
-- Social links point to `https://x.com/RSX6900_rh`; Explorer/Docs links are still placeholders (`#`) — update them once those destinations exist.
+- Social links point to `https://x.com/RSX6900_rh`. The Explorer link card points to $RSX's token page on the Robinhood Chain Blockscout explorer; Docs is still a placeholder (`#`).

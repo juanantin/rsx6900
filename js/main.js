@@ -192,10 +192,11 @@
       setLiveValue(document.getElementById("statHolderShare"), holderSharePct + "% OF FEES");
     }
 
+    // rough fallback until the explorer holder count loads (or if it fails)
     const latestPayout = Array.isArray(data.events) ? data.events.find((e) => e.kind === "payout") : null;
-    if (latestPayout && typeof latestPayout.holders === "number") {
+    if (latestPayout && typeof latestPayout.holders === "number" && !holdersLoadedFromExplorer) {
       setLiveValue(document.getElementById("statHolders"), latestPayout.holders.toLocaleString("en-US"));
-      setLiveValue(document.getElementById("statHoldersDelta"), "LAST ROUND PAYOUT");
+      setLiveValue(document.getElementById("statHoldersDelta"), "EST. · LAST ROUND PAYOUT");
     }
 
     const dashChip = document.getElementById("dashChip");
@@ -204,6 +205,32 @@
 
   refreshBasketData();
   setInterval(refreshBasketData, BASKET_REFRESH_MS);
+
+  /* ---------------- live holder count (Robinhood Chain explorer, via proxy) ---------------- */
+  const HOLDERS_API_URL = "/api/holders";
+  const HOLDERS_REFRESH_MS = 90000;
+  let holdersLoadedFromExplorer = false;
+
+  async function refreshHoldersData() {
+    let data;
+    try {
+      const res = await fetch(HOLDERS_API_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("bad status " + res.status);
+      data = await res.json();
+    } catch (err) {
+      return; // explorer unreachable — basket-based estimate stays in place
+    }
+    const raw = data && (data.holders ?? data.holders_count ?? data.holdersCount);
+    const count = typeof raw === "string" ? parseInt(raw, 10) : raw;
+    if (typeof count !== "number" || Number.isNaN(count)) return;
+
+    holdersLoadedFromExplorer = true;
+    setLiveValue(document.getElementById("statHolders"), count.toLocaleString("en-US"));
+    setLiveValue(document.getElementById("statHoldersDelta"), "ON ROBINHOOD CHAIN");
+  }
+
+  refreshHoldersData();
+  setInterval(refreshHoldersData, HOLDERS_REFRESH_MS);
 
   /* ---------------- scroll reveal ---------------- */
   const revealEls = document.querySelectorAll(".reveal");
